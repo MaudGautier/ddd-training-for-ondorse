@@ -1,8 +1,12 @@
 // DOMAIN
-import { IdDocument, Person, Status } from "./types";
+import { FirstName, IdDocument, Person, Status } from "./types";
+
+function firstNamesMatch(personFirstName: FirstName, documentFirstName: FirstName): boolean {
+  return documentFirstName.startsWith(personFirstName);
+}
 
 export function doesPersonMatchDocument(person: Person, identityDocument: IdDocument): Status {
-  if (person.firstName !== identityDocument.person.firstName) {
+  if (!firstNamesMatch(person.firstName, identityDocument.person.firstName)) {
     return "invalid";
   }
 

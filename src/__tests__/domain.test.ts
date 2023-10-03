@@ -44,6 +44,24 @@ describe("doesPersonMatchDocument", () => {
       // THEN
       expect(status).toEqual("invalid");
     });
+
+    test("Should return 'valid' if the firstName on the document has additional names not registered by the person, but the first name(s) match", () => {
+      // GIVEN
+      const person = JANE_DOE;
+      const idDocument = {
+        id: "1",
+        person: {
+          ...JANE_DOE,
+          firstName: "Jane Michelle",
+        },
+      };
+
+      // WHEN
+      const status = doesPersonMatchDocument(person, idDocument);
+
+      // THEN
+      expect(status).toEqual("valid");
+    });
   });
 
   describe("Checks on lastName", () => {
