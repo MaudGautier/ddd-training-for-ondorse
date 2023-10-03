@@ -1,9 +1,9 @@
 {
-  "name": "typescript-kata-starter",
+  "name": "ddd-training-for-ondorse",
   "version": "1.0.0",
-  "description": "Starter repo for kata exercises with Node, TypeScript & Jest",
+  "description": "Repo containing an example of how we can apply DDD in our codebase",
   "author": "Maud Gautier",
-  "main": "src/index.ts",
+  "main": "src/types.ts",
   "scripts": {
     "test": "jest --watch --coverage"
   },
@@ -19,6 +19,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com:MaudGautier/my-js-kata-starter.git"
+    "url": "git+https://github.com:MaudGautier/ddd-training-for-ondorse.git"
   }
 }
