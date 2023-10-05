@@ -29,10 +29,9 @@ type IDNowDocumentResponse = {
 // -------------------------------- OtherProvider ---------------------------------
 type OtherProviderDocumentResponse = {
   id: number;
-  person: {
-    first_name: string;
-    last_name: string;
-    birth_date: {
+  user: {
+    name: string;
+    birthDate: {
       day: number;
       month: number;
       year: number;
@@ -86,10 +85,9 @@ async function fetchOtherProviderDocument(documentId: string): Promise<OtherProv
 
   return {
     id: 123,
-    person: {
-      first_name: "Jane",
-      last_name: "Doe",
-      birth_date: {
+    user: {
+      name: "Jane Doe",
+      birthDate: {
         day: 1,
         month: 1,
         year: 1990,
@@ -166,9 +164,9 @@ function convertOtherProviderResponseToDomainDocument(
   return {
     id: otherProviderDocument.id.toString(),
     person: {
-      firstName: otherProviderDocument.person.first_name,
-      lastName: otherProviderDocument.person.last_name,
-      birthDate: otherProviderDocument.person.birth_date,
+      firstName: otherProviderDocument.user.name.split(" ")[0],
+      lastName: otherProviderDocument.user.name.split(" ")[1],
+      birthDate: otherProviderDocument.user.birthDate,
     },
   };
 }
