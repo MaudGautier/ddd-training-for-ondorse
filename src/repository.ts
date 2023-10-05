@@ -26,6 +26,20 @@ type IDNowDocumentResponse = {
   // lastUpdateDate: Optional[datetime]
 };
 
+// -------------------------------- OtherProvider ---------------------------------
+type OtherProviderDocumentResponse = {
+  id: number;
+  person: {
+    first_name: string;
+    last_name: string;
+    birth_date: {
+      day: number;
+      month: number;
+      year: number;
+    };
+  };
+};
+
 // -------------------------------------- DB --------------------------------------
 type DBDocument = {
   id: string;
@@ -62,6 +76,24 @@ async function fetchIdNowDocument(documentId: string): Promise<IDNowDocumentResp
           },
         },
       ],
+    },
+  };
+}
+
+// -------------------------------- OtherProvider ---------------------------------
+async function fetchOtherProviderDocument(documentId: string): Promise<OtherProviderDocumentResponse> {
+  // MOCKING A REQUEST TO ANOTHER PROVIDER
+
+  return {
+    id: 123,
+    person: {
+      first_name: "Jane",
+      last_name: "Doe",
+      birth_date: {
+        day: 1,
+        month: 1,
+        year: 1990,
+      },
     },
   };
 }
@@ -128,6 +160,19 @@ function convertIdNowResponseToDomainDocument(idNowDocument: IDNowDocumentRespon
   };
 }
 
+function convertOtherProviderResponseToDomainDocument(
+  otherProviderDocument: OtherProviderDocumentResponse
+): IdDocument {
+  return {
+    id: otherProviderDocument.id.toString(),
+    person: {
+      firstName: otherProviderDocument.person.first_name,
+      lastName: otherProviderDocument.person.last_name,
+      birthDate: otherProviderDocument.person.birth_date,
+    },
+  };
+}
+
 function convertDbPersonToDomainPerson(dbPerson: DBPerson): Person {
   return {
     firstName: dbPerson.first_name,
@@ -140,7 +185,7 @@ function convertDbPersonToDomainPerson(dbPerson: DBPerson): Person {
 // -- Fetch info from repository (either DB or API request) --
 // --------------------------------------------------------------------------------
 
-export async function fetchIdentityDocument(documentId: string): Promise<IdDocument> {
+export async function fetchIdentityDocumentByIDNow(documentId: string): Promise<IdDocument> {
   // Request to IDNow
   const document = await fetchIdNowDocument(documentId);
 
@@ -149,6 +194,14 @@ export async function fetchIdentityDocument(documentId: string): Promise<IdDocum
 
   // Convert data into our domain types
   return convertIdNowResponseToDomainDocument(document);
+}
+
+export async function fetchIdentityDocumentByOtherProvider(documentId: string): Promise<IdDocument> {
+  // Request to otherProvider
+  const document = await fetchOtherProviderDocument(documentId);
+
+  // Convert data into our domain types
+  return convertOtherProviderResponseToDomainDocument(document);
 }
 
 export async function fetchPerson(documentId: string): Promise<Person> {
