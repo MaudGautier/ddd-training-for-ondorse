@@ -23,3 +23,7 @@ export type IdDocument = {
 };
 
 export type Status = "valid" | "invalid";
+
+export type Dependencies = {
+  checkPersonNameInOfficialRegister: (name: string) => boolean;
+};

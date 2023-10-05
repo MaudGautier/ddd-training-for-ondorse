@@ -1,4 +1,4 @@
-import { BirthDate, IdDocument, Person } from "./types";
+import { BirthDate, Dependencies, IdDocument, Person } from "./types";
 
 // --------------------------------------------------------------------------------
 // -- Types --
@@ -114,6 +114,20 @@ async function fetchPersonInDB(personId: string): Promise<DBPerson> {
       month: 1,
       year: 1992,
     },
+  };
+}
+
+// --------------------------------- Dependencies ---------------------------------
+
+// This is a mock for a dependency that would make a call to an official register and
+export function checkPersonNameInOfficialRegister(name: string): boolean {
+  // make call to official register and get response
+  return true;
+}
+
+export function buildDependencies(): Dependencies {
+  return {
+    checkPersonNameInOfficialRegister,
   };
 }
 

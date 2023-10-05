@@ -1,6 +1,11 @@
 import { IdDocument, Status } from "./types";
 import { doesPersonMatchDocument } from "./domain";
-import { fetchIdentityDocumentByIDNow, fetchIdentityDocumentByOtherProvider, fetchPerson } from "./repository";
+import {
+  buildDependencies,
+  fetchIdentityDocumentByIDNow,
+  fetchIdentityDocumentByOtherProvider,
+  fetchPerson,
+} from "./repository";
 
 type IdDocumentProvider = "IDNow" | "otherProvider";
 type GetIdDocumentFunction = (documentId: string) => Promise<IdDocument>;
@@ -18,5 +23,7 @@ async function checkPersonIdentityDocument(
   const identityDocument = await ID_DOCUMENT_PROVIDER_FUNCTION[idDocumentProvider](documentId);
   const person = await fetchPerson(documentId);
 
-  return doesPersonMatchDocument(person, identityDocument);
+  const dependencies = buildDependencies();
+
+  return doesPersonMatchDocument(person, identityDocument, dependencies);
 }

@@ -1,4 +1,4 @@
-import { IdDocument, Person } from "../types";
+import { Dependencies, IdDocument, Person } from "../types";
 import { doesPersonMatchDocument } from "../domain";
 
 const JANE_DOE: Person = {
@@ -16,6 +16,15 @@ const JANE_DOE_DOC: IdDocument = {
   person: JANE_DOE,
 };
 
+const MOCKED_DEPENDENCIES: Dependencies = {
+  checkPersonNameInOfficialRegister: (name: string) => {
+    if (name === "Janne Doe") {
+      return false;
+    }
+    return true;
+  },
+};
+
 describe("doesPersonMatchDocument", () => {
   test("Should return 'valid' if all pieces of information match (firstName, lastName, birthdate)", () => {
     // GIVEN
@@ -23,7 +32,7 @@ describe("doesPersonMatchDocument", () => {
     const idDocument = JANE_DOE_DOC;
 
     // WHEN
-    const status = doesPersonMatchDocument(person, idDocument);
+    const status = doesPersonMatchDocument(person, idDocument, MOCKED_DEPENDENCIES);
 
     // THEN
     expect(status).toEqual("valid");
@@ -39,7 +48,7 @@ describe("doesPersonMatchDocument", () => {
       const idDocument = JANE_DOE_DOC;
 
       // WHEN
-      const status = doesPersonMatchDocument(person, idDocument);
+      const status = doesPersonMatchDocument(person, idDocument, MOCKED_DEPENDENCIES);
 
       // THEN
       expect(status).toEqual("invalid");
@@ -57,7 +66,7 @@ describe("doesPersonMatchDocument", () => {
       };
 
       // WHEN
-      const status = doesPersonMatchDocument(person, idDocument);
+      const status = doesPersonMatchDocument(person, idDocument, MOCKED_DEPENDENCIES);
 
       // THEN
       expect(status).toEqual("valid");
@@ -74,7 +83,30 @@ describe("doesPersonMatchDocument", () => {
       const idDocument = JANE_DOE_DOC;
 
       // WHEN
-      const status = doesPersonMatchDocument(person, idDocument);
+      const status = doesPersonMatchDocument(person, idDocument, MOCKED_DEPENDENCIES);
+
+      // THEN
+      expect(status).toEqual("invalid");
+    });
+  });
+
+  describe("Checks on name validity in official register", () => {
+    test("Should return 'invalid' if name doesn't match the official register", () => {
+      // GIVEN
+      const person = {
+        ...JANE_DOE,
+        firstName: "Janne",
+      };
+      const idDocument = {
+        ...JANE_DOE_DOC,
+        person: {
+          ...JANE_DOE,
+          firstName: "Janne",
+        },
+      };
+
+      // WHEN
+      const status = doesPersonMatchDocument(person, idDocument, MOCKED_DEPENDENCIES);
 
       // THEN
       expect(status).toEqual("invalid");
@@ -94,7 +126,7 @@ describe("doesPersonMatchDocument", () => {
       const idDocument = JANE_DOE_DOC;
 
       // WHEN
-      const status = doesPersonMatchDocument(person, idDocument);
+      const status = doesPersonMatchDocument(person, idDocument, MOCKED_DEPENDENCIES);
 
       // THEN
       expect(status).toEqual("invalid");
@@ -112,7 +144,7 @@ describe("doesPersonMatchDocument", () => {
       const idDocument = JANE_DOE_DOC;
 
       // WHEN
-      const status = doesPersonMatchDocument(person, idDocument);
+      const status = doesPersonMatchDocument(person, idDocument, MOCKED_DEPENDENCIES);
 
       // THEN
       expect(status).toEqual("invalid");
